@@ -45,6 +45,26 @@ public class AppUserController {
         userService.addRoleToUser(roleToUserForm.getUsername(), roleToUserForm.getRoleName());
         return ok().build();
     }
+
+    @GetMapping("/user-message")
+    ResponseEntity<String> getMessageForUser() {
+        return ok("Message for user");
+    }
+
+    @GetMapping("/super-user-message")
+    ResponseEntity<String> getMessageForSuperUser() {
+        return ok("Message for super user");
+    }
+
+    @GetMapping("/permit-all-message")
+    ResponseEntity<String> getMessageForAll() {
+        return ok("Message for all");
+    }
+
+    @GetMapping("/authenticated-message")
+    ResponseEntity<String> getMessageForAuthenticatedUsers() {
+        return ok("Message for authenticated users");
+    }
 }
 
 @Getter
