@@ -1,9 +1,7 @@
-package com.example.jwtmonosecurity.service;
+package com.example.jwtmonosecurity.users;
 
-import com.example.jwtmonosecurity.domain.AppUser;
-import com.example.jwtmonosecurity.domain.Role;
-import com.example.jwtmonosecurity.repository.AppUserRepository;
-import com.example.jwtmonosecurity.repository.RoleRepository;
+import com.example.jwtmonosecurity.roles.Role;
+import com.example.jwtmonosecurity.roles.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

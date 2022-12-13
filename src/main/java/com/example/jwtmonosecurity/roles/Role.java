@@ -1,4 +1,4 @@
-package com.example.jwtmonosecurity.domain;
+package com.example.jwtmonosecurity.roles;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

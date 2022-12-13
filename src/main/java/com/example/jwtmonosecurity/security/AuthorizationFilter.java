@@ -1,4 +1,4 @@
-package com.example.jwtmonosecurity.filter;
+package com.example.jwtmonosecurity.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -21,20 +21,19 @@ import java.util.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
-//SPRAWDZANIE ODPOWIEDNICH RÓL I NADAWANIE DOSTĘPU DO ODPOWIEDNICH ZASOBÓW
-
 @Slf4j
-public class CustomAuthorizationFilter extends OncePerRequestFilter {
+public class AuthorizationFilter extends OncePerRequestFilter {
+
+    private static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/login")) {
-            filterChain.doFilter(request, response);
-        }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        checkLoginPath(request, response, filterChain);
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (Objects.nonNull(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
+        if (Objects.nonNull(authorizationHeader) && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             try {
-                String token = authorizationHeader.substring("Bearer ".length());
+                String token = authorizationHeader.substring(TOKEN_PREFIX.length());
                 Algorithm algorithm = Algorithm.HMAC512("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(token);
@@ -51,16 +50,16 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 log.info("Error logging in: {}", e.getMessage());
                 response.setHeader("error", e.getMessage());
                 response.setStatus(FORBIDDEN.value());
-//                response.sendError(FORBIDDEN.value());
                 Map<String, String> errors = new HashMap<>();
                 errors.put("error_message", e.getMessage());
                 new ObjectMapper().writeValue(response.getOutputStream(), errors);
             }
-            String token = authorizationHeader.substring("Bearer ".length());
-            Algorithm algorithm = Algorithm.HMAC512("secret".getBytes());
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-        } else {
+        }
+    }
+
+    private static void checkLoginPath(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws IOException, ServletException {
+        if (request.getServletPath().equals("/api/login")) {
             filterChain.doFilter(request, response);
         }
     }

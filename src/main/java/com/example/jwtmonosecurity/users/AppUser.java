@@ -1,5 +1,6 @@
-package com.example.jwtmonosecurity.domain;
+package com.example.jwtmonosecurity.users;
 
+import com.example.jwtmonosecurity.roles.Role;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 

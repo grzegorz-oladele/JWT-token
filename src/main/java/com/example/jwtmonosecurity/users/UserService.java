@@ -1,7 +1,7 @@
-package com.example.jwtmonosecurity.service;
+package com.example.jwtmonosecurity.users;
 
-import com.example.jwtmonosecurity.domain.AppUser;
-import com.example.jwtmonosecurity.domain.Role;
+import com.example.jwtmonosecurity.users.AppUser;
+import com.example.jwtmonosecurity.roles.Role;
 
 import java.util.List;
 
